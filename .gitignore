@@ -1,0 +1,76 @@
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Virtual environment
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django-related files
+*.log
+*.pot
+db.sqlite3
+media/
+staticfiles/
+
+# Migrations (optional, but usually kept in version control)
+# **Uncomment if you want to ignore migrations**
+# */migrations/
+
+# IDE-specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# DRF-related files
+*.json
+*.yaml
+*.xml
+
+# Ignore compiled translations
+*.mo
+
+# Ignore local settings
+local_settings.py
+
+# Ignore collected static files
+static/
+
+# Ignore media files (user uploads)
+media/
+
+# Ignore Django secret key file (if used)
+secret_key.txt
+
+# Ignore temporary files
+*.swp
+*.swo
+
+secrets.txt
