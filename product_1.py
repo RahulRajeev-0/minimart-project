@@ -21,6 +21,7 @@ def reduce_stock(p_id, q):
     prod.save()
     return True
 
+
 # Unused helper function
 def print_product():
     print('This is product file')
