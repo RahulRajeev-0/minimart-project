@@ -1,3 +1,15 @@
+"""
+Models for Customer (user)
+
+models:
+-customer 
+
+need to consider or explore:
+- authentication system 
+- weather to use customer as user or not (based on app requirement)
+- if got time, try to do jwt after main implementation
+"""
+
 from django.db import models
 
 from django.core.validators import EmailValidator

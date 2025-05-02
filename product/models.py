@@ -1,3 +1,15 @@
+"""
+Models for Product
+
+Consists 
+- Product model
+- Category model 
+
+areas to consider :
+- product image field 
+(based on available time need to add)
+"""
+
 from django.db import models
 from django.utils import timezone
 # validation
