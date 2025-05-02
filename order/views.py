@@ -12,7 +12,8 @@ from .serializers import OrderSerializer, OrderItemSerializer
 from .services import (place_order, 
                        update_order_status, 
                        get_all_orders, 
-                       get_order_by_id)
+                       get_order_by_id,
+                       get_orders_by_customer_id)
 
 # views 
 
@@ -91,6 +92,19 @@ class SoftDeleteOrderView(APIView):
         order.save()
         return Response({"detail": "Product soft-deleted"}, 
                         status=status.HTTP_204_NO_CONTENT)
+
+# for getting the orders of specific customer 
+class CustomerOrdersView(APIView):
+    def get(self, request, id):
+        
+        try:
+            orders = get_orders_by_customer_id(id)
+        except Exception as e:
+            return Response({"error": e.detail},
+                            status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
 
 

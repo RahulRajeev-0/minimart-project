@@ -98,3 +98,10 @@ def get_order_by_id(order_id):
         return Order.objects.prefetch_related('items', 'items__product').get(id=order_id, is_active=True)
     except Order.DoesNotExist:
         raise NotFound("Order not found.")
+    
+
+def get_orders_by_customer_id(customer_id):
+    orders = Order.objects.prefetch_related('items', 'items__product').filter(customer_id=customer_id, is_active=True)
+    if not orders.exists():
+        raise NotFound("No orders found for this customer.")
+    return orders

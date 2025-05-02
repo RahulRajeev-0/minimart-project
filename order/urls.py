@@ -8,6 +8,7 @@ urlpatterns = [
     path('orders/', views.GetAllOrderView.as_view(), name='order-list'),
     path('order-detail/<int:id>/', views.GetOrderDetailView.as_view(), name='order-details'),
     path('order-delete/<int:id>/', views.SoftDeleteOrderView.as_view(), name='delete-order'),
+    path('customer-orders/<int:id>/', views.CustomerOrdersView.as_view(), name='customer-order'),
 ]
 
 
