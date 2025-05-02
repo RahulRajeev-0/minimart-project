@@ -9,11 +9,14 @@ from customer.models import Customer
 from .serializers import OrderSerializer, OrderItemSerializer
 
 # service/ helper or utility function 
-from .services import place_order
+from .services import (place_order, 
+                       update_order_status, 
+                       get_all_orders, 
+                       get_order_by_id)
 
+# views 
 
-class OrderView(APIView):
-    
+class PlaceOrderView(APIView):
     # create order (place order)
     def post(self, request):
         customer_id = request.data.get('customer_id', 0)
@@ -28,14 +31,16 @@ class OrderView(APIView):
             order = place_order(customer, items_data)
         except ValidationError as e:
             print(str(e))
-            return Response({"error": e.detail}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": e.detail}, 
+                            status=status.HTTP_400_BAD_REQUEST)
         
         return Response(
             OrderSerializer(order).data, 
             status=status.HTTP_201_CREATED
             )
-        
-
+    
+# update/edit the order (change the status)
+class OrderStatusUpdateView(APIView):
     def patch(self, request):
         order_id = request.data.get("order_id")
         new_status = request.data.get("status")
@@ -45,57 +50,47 @@ class OrderView(APIView):
                 {"error": "order_id and status are required."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         try:
-            order = Order.objects.get(id=order_id)
-        except Order.DoesNotExist:
-            return Response(
-                {"error": "Order not found."},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            order = update_order_status(order_id, new_status)
+        except ValidationError as e:
+            return Response({"error": e.detail}, 
+                            status=status.HTTP_400_BAD_REQUEST)
 
-        old_status = order.status
-        
-        if new_status not in dict(Order.STATUS_CHOICES):
-                return Response(
-                    {"error": "Invalid status value."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        
-        with transaction.atomic():
-            # If cancelling and wasn't already cancelled
-            if new_status == 'cancelled' and old_status != 'cancelled':
-                for item in order.items.all():
-                    product = item.product
-                    product.in_stock += item.qty
-                    product.save()
+        return Response(
+            {"message": f"Order status updated to {order.status}."},
+            status=status.HTTP_200_OK
+        )
 
-            # If un-cancelling is allowed (optional reverse logic)
-            elif old_status == 'cancelled' and new_status != 'cancelled':
-                for item in order.items.all():
-                    product = item.product
-                    if product.in_stock < item.qty:
-                        return Response(
-                            {"error": f"Insufficient stock for product '{product.name}'."},
-                            status=status.HTTP_400_BAD_REQUEST
-                        )
-                    product.in_stock -= item.qty
-                    product.save()
-
-            order.status = new_status
-            order.save()
-
-        return Response({"message": f"Order status updated to {new_status}."}, 
-                        status=status.HTTP_200_OK)
-    
-    
+# get all the orders 
+class GetAllOrderView(APIView):
     def get(self, request):
-        pass
-    # change order status
-
-        
+        orders = get_all_orders()
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
-    # soft delete order
-    def delete(self, request):
-        pass
+
+# get a particular order details 
+class GetOrderDetailView(APIView):
+    def get(self, request, id):
+        try:
+            order = get_order_by_id(id)
+        except Exception as e:
+            return Response({"error": e.detail}, status=status.HTTP_404_NOT_FOUND)
+        serializer = OrderSerializer(order)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+#  for soft delete of order
+class SoftDeleteOrderView(APIView):
+    def delete(self, request, id):
+        try:
+            order = get_order_by_id(id)
+        except Exception as e:
+            return Response({"error": e.detail}, status=status.HTTP_404_NOT_FOUND)
+        order.is_active = False
+        order.save()
+        return Response({"detail": "Product soft-deleted"}, 
+                        status=status.HTTP_204_NO_CONTENT)
+        
+
 
