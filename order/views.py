@@ -100,7 +100,7 @@ class CustomerOrdersView(APIView):
             orders = get_orders_by_customer_id(id)
         except Exception as e:
             return Response({"error": e.detail},
-                            status=status.HTTP_404_NOT_FOUND)
+                            status=status.HTTP_400_BAD_REQUEST)
         
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

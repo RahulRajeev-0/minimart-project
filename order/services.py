@@ -101,7 +101,5 @@ def get_order_by_id(order_id):
     
 
 def get_orders_by_customer_id(customer_id):
-    orders = Order.objects.prefetch_related('items', 'items__product').filter(customer_id=customer_id, is_active=True)
-    if not orders.exists():
-        raise NotFound("No orders found for this customer.")
-    return orders
+    return Order.objects.prefetch_related('items', 'items__product')\
+        .filter(customer_id=customer_id, is_active=True)
