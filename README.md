@@ -2,9 +2,15 @@
 
 ## Description
 
-A **Django Rest Framework** project that serves as a backend API for managing customers, orders, and product for the **Minimart** application. This project supports **CRUD operations**.
+A **Django Rest Framework** project that serves as a backend API for managing customers, orders, and product for the **Minimart** application. This project supports **CRUD operations**.It's simple mini e-commerce project like it's name MiniMart. It use basic logic, general and simple logical implementation of e-commerce backend system. Customer will search or looks products , and order it.
 
 ---
+## 📌 API Documentation
+
+Access the full API collection and test endpoints here:
+
+🔗 [API Documentation](https://documenter.getpostman.com/view/31743247/2sB2j68paz)  
+
 
 ## 🚀 **Installation**
 
