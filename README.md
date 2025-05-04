@@ -24,8 +24,8 @@ Access the full API collection and test endpoints here:
 ### 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/yourusername/minimart-api.git
-cd minimart-api
+git clone https://github.com/RahulRajeev-0/minimart-project.git
+cd minimart-project
 ```
 
 ### 2. **Create a virtual environment:**
