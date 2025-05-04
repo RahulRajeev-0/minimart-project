@@ -4,7 +4,6 @@ from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
 
-from .models import Order, OrderItem
 from customer.models import Customer
 from .serializers import OrderSerializer, OrderItemSerializer
 
