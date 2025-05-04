@@ -26,6 +26,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+
     def get_queryset(self):
         return Product.objects.filter(is_active=True)
 
